@@ -11,6 +11,7 @@ const mqpacker = require('css-mqpacker');
 const minify = require('gulp-csso');
 const rename = require('gulp-rename');
 const imagemin = require('gulp-imagemin');
+const webpack = require('webpack-stream');
 
 gulp.task('style', function () {
   return gulp.src('sass/style.scss')
@@ -36,9 +37,25 @@ gulp.task('style', function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src('js/**/*.js')
+  return gulp.src('js/main.js')
+  	.pipe(webpack({
+			output: {
+				filename: 'scripts.js',
+			},
+			module: {
+				rules: [{
+					test: /\.(js)$/,
+					exclude: /(node_modules)/,
+					loader: 'babel-loader',
+					query: {
+						presets: ['env']
+					}
+				}]
+			}
+		}))
     .pipe(plumber())
-    .pipe(gulp.dest('build/js/'));
+    .pipe(gulp.dest('build/js/'))
+    ;
 });
 
 gulp.task('test', function () {
