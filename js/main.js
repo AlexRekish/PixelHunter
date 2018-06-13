@@ -1,7 +1,6 @@
-import {render} from './render';
-import {intro} from './modules/intro';
+import * as render from './render';
+import * as intro from './modules/intro';
 
-(function () {
-  render.switchScreens(intro.introScreen);
-})();
+render.switchScreens(intro.screen());
+
 

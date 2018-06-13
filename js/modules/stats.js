@@ -1,14 +1,10 @@
-import {utils} from '../utils';
-export const stats = (function () {
-  const statsTemplate = `
-  <header class="header">
-    <div class="header__back">
-      <button class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.svg" width="101" height="44">
-      </button>
-    </div>
-  </header>
+import * as utils from '../utils';
+import * as render from '../render';
+import * as greetings from './greetings';
+import * as footer from './footer';
+import * as header from './header';
+const statsTemplate = `
+  ${header.header}
   <div class="result">
     <h1>Победа!</h1>
     <table class="result__table">
@@ -109,18 +105,12 @@ export const stats = (function () {
       </tr>
     </table>
   </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
+  ${footer.footer}`;
+export const screen = () => {
   const statsScreen = utils.getElementFromTemplate(statsTemplate);
-  return {
-    statsScreen
-  };
-})();
+  const back = statsScreen.querySelector(`.header__back`);
+  back.addEventListener(`click`, () => {
+    render.switchScreens(greetings.screen());
+  });
+  return statsScreen;
+};

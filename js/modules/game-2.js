@@ -1,21 +1,12 @@
-import {thirdGame} from './game-3';
-import {utils} from '../utils';
-export const secondGame = (function () {
-  const secondGameTemplate = `
-  <header class="header">
-    <div class="header__back">
-      <button class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.svg" width="101" height="44">
-      </button>
-    </div>
-    <h1 class="game__timer">NN</h1>
-    <div class="game__lives">
-      <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-      <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    </div>
-  </header>
+import * as thirdGame from './game-3';
+import * as greetings from './greetings';
+import * as render from '../render';
+import * as utils from '../utils';
+import * as footer from './footer';
+import * as gameHeader from './gameHeader';
+import * as data from '../data';
+const secondGameTemplate = `
+  ${gameHeader.gameHeader(data.initialState)}
   <div class="game">
     <p class="game__task">Угадай, фото или рисунок?</p>
     <form class="game__content  game__content--wide">
@@ -46,18 +37,16 @@ export const secondGame = (function () {
       </ul>
     </div>
   </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
+  ${footer.footer}`;
+export const screen = () => {
   const secondGameScreen = utils.getElementFromTemplate(secondGameTemplate);
-  return {
-    secondGameScreen
-  };
-})();
+  const answers2 = secondGameScreen.querySelector(`.game__content`);
+  answers2.addEventListener(`change`, () => {
+    render.switchScreens(thirdGame.screen());
+  });
+  const back = secondGameScreen.querySelector(`.header__back`);
+  back.addEventListener(`click`, () => {
+    render.switchScreens(greetings.screen());
+  });
+  return secondGameScreen;
+};

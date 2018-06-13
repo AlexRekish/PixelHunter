@@ -1,14 +1,10 @@
-import {intro} from './modules/intro';
-import {stats} from './modules/stats';
-export const render = (function () {
-  const main = document.querySelector(`.central`);
+// import * as intro from './modules/intro';
+// import * as stats from './modules/stats';
+// import * as utils from './utils';
+export const main = document.querySelector(`.central`);
 
-  function switchScreens(template) {
-    main.innerHTML = ``;
-    main.appendChild(template);
-  }
-  return {
-    switchScreens,
-    main
-  };
-})();
+export function switchScreens(template) {
+  main.innerHTML = ``;
+  main.appendChild(template);
+}
+
