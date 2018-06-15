@@ -1,11 +1,12 @@
 import * as utils from '../utils';
 import * as render from '../render';
 import * as greetings from './greetings';
-import * as firstGame from './game-1';
+// import * as firstGame from './game-1';
 import * as footer from './footer';
-import * as header from './header';
+import * as staticHeader from './staticHeader';
+// import * as data from '../data';
 const rulesTemplate = `
-  ${header.header}
+  ${staticHeader.header}
   <div class="rules">
     <h1 class="rules__title">Правила</h1>
     <p class="rules__description">Угадай 10 раз для каждого изображения фото <img
@@ -32,7 +33,7 @@ export const screen = () => {
   back.addEventListener(`click`, () => {
     render.switchScreens(greetings.screen());
   });
-  go.addEventListener(`submit`, () => render.switchScreens(firstGame.screen()));
+  go.addEventListener(`submit`, () => utils.startGame());
   input.addEventListener(`input`, () => {
     if (input.value) {
       submit.disabled = false;

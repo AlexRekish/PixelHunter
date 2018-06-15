@@ -2,7 +2,7 @@ import * as utils from '../utils';
 import * as render from '../render';
 import * as greetings from './greetings';
 import * as footer from './footer';
-import * as header from './header';
+import * as header from './staticHeader';
 const statsTemplate = `
   ${header.header}
   <div class="result">
