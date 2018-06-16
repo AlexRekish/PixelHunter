@@ -8,7 +8,7 @@ import * as data from '../data';
 import * as gameStats from './gameStats';
 export const screen = () => {
   const firstGameTemplate = `
-  ${gameHeader.gameHeader(data.initialState)}
+  ${gameHeader.gameHeader(data.currentState)}
   <div class="game">
     <p class="game__task">${data.game[1].description}</p>
     <form class="game__content">
@@ -35,15 +35,17 @@ export const screen = () => {
         </label>
       </div>
     </form>
-    ${gameStats.gameStats(data.currentState.answers)}
+    <div class="stats">
+    ${gameStats.gameStats(data.currentState.stats.answers)}
+    </div>
   </div>
   ${footer.footer}`;
   const firstGameScreen = utils.getElementFromTemplate(firstGameTemplate);
   const answers1 = firstGameScreen.querySelector(`.game__content`);
-  answers1.addEventListener(`change`, () => {
+  answers1.addEventListener(`change`, (evt) => {
     if (answers1.querySelector(`input[name=question1]:checked`) && answers1.querySelector(`input[name=question2]:checked`)) {
       // render.switchScreens(secondGame.screen());
-      utils.nextQuestion();
+      utils.checkAnswer(evt);
     }
   });
   const back = firstGameScreen.querySelector(`.header__back`);

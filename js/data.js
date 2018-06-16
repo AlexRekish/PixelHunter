@@ -1,15 +1,41 @@
 export const NUMBER_OF_QUESTION = 10;
+export const points = Object.freeze({
+  CORRECT: 100,
+  FAST: 50,
+  SLOW: -50,
+  LIVES: 50
+});
 
-// начальное состояние игры
+// начальное состояние игры. Скорее всего заменю на класс <<< !!!!
 
 export const initialState = Object.freeze({
   question: 0,
   time: 30,
   lives: 3,
-  answers: [`unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`]
+  stats: {
+    answers: [`unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`],
+    rightAnswers: 0,
+    score: 0,
+    result: ``,
+    speedBonus: {
+      count: 0,
+      points: 0
+    },
+    livesBonus: {
+      count: 0,
+      points: 0
+    },
+    slowPenalty: {
+      count: 0,
+      points: 0
+    },
+    totalScore: 0
+  }
 });
 
-export const currentState = Object.assign({}, initialState);
+// воспользуюсь JSON пока не нашел нормального способа глубокого клонирования объекта. Возможно реализую через наследование  <<< !!!!
+
+export const currentState = JSON.parse(JSON.stringify(initialState));
 
 export const answerStatus = {
   wrong: `wrong`,
@@ -86,3 +112,4 @@ export const game = [
 
 export const questions = () => new Array(10).fill().map(() => game[Math.floor(Math.random() * game.length)]);
 
+export const statistic = [];
