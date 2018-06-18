@@ -4,6 +4,7 @@ import * as secondGame from './modules/game-2';
 import * as thirdGame from './modules/game-3';
 import * as finalStats from './modules/finalStats';
 import * as render from './render';
+import * as resize from './resize';
 
 const questions = [];
 let dcs; // <<< Текущее состояние игры
@@ -37,12 +38,15 @@ function renderCurrentQuestion() {
   switch (questions[dcs.question].mode) {
     case `oneImage`:
       render.switchScreens(secondGame.screen());
+      resize.getPicturesSizes();
       break;
     case `twoImages`:
       render.switchScreens(firstGame.screen());
+      resize.getPicturesSizes();
       break;
     case `threeImages`:
       render.switchScreens(thirdGame.screen());
+      resize.getPicturesSizes();
       break;
   }
 }

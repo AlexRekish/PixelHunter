@@ -12,6 +12,7 @@ const minify = require('gulp-csso');
 const rename = require('gulp-rename');
 const imagemin = require('gulp-imagemin');
 const webpack = require('webpack-stream');
+const mocha = require('gulp-mocha');
 
 gulp.task('style', function () {
   return gulp.src('sass/style.scss')
@@ -118,4 +119,15 @@ gulp.task('assemble', ['clean'], function () {
 
 gulp.task('build', ['assemble'], function () {
   gulp.start('imagemin');
+});
+
+gulp.task('test', function () {
+      return gulp
+        .src(['js/**/*.test.js'], {
+          read: false
+        })
+        .pipe(mocha({
+              compilers: ['js:babel-register'], // Включим поддержку "import/export" в Mocha тестах
+              reporter: 'nyan'
+              }));
 });

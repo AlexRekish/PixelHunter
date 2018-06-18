@@ -68,9 +68,13 @@ export const game = [
     params: [
       {
         type: `paint`,
-        src: pictures.paintings[0]
+        src: pictures.paintings[1]
       }
-    ]
+    ],
+    framesize: {
+      width: 705,
+      height: 455
+    }
   },
   {
     mode: `twoImages`,
@@ -79,13 +83,17 @@ export const game = [
     params: [
       {
         type: `paint`,
-        src: pictures.paintings[1]
+        src: pictures.paintings[2]
       },
       {
         type: `photo`,
         src: pictures.photos[0]
       }
-    ]
+    ],
+    framesize: {
+      width: 468,
+      height: 458
+    }
   },
   {
     mode: `threeImages`,
@@ -102,9 +110,13 @@ export const game = [
       },
       {
         type: `paint`,
-        src: pictures.paintings[2]
+        src: pictures.paintings[0]
       }
-    ]
+    ],
+    framesize: {
+      width: 304,
+      height: 455
+    }
   }
 ];
 
