@@ -1,6 +1,6 @@
 import * as render from './render';
-import * as intro from './modules/intro';
+import {intro} from './modules/intro';
 
-render.switchScreens(intro.screen());
+render.switchScreens(intro.element);
 
 

@@ -1,8 +1,8 @@
 import * as data from './data';
-import * as firstGame from './modules/game-1';
-import * as secondGame from './modules/game-2';
-import * as thirdGame from './modules/game-3';
-import * as finalStats from './modules/finalStats';
+import {firstGame} from './modules/game-1';
+import {secondGame} from './modules/game-2';
+import {thirdGame} from './modules/game-3';
+import {finalStats} from './modules/finalStats';
 import * as render from './render';
 import * as resize from './resize';
 
@@ -37,16 +37,16 @@ export function startGame() {
 function renderCurrentQuestion() {
   switch (questions[dcs.question].mode) {
     case `oneImage`:
-      render.switchScreens(secondGame.screen());
-      resize.getPicturesSizes();
+      render.switchScreens(secondGame.element);
+      resize.setPicturesSizes();
       break;
     case `twoImages`:
-      render.switchScreens(firstGame.screen());
-      resize.getPicturesSizes();
+      render.switchScreens(firstGame.element);
+      resize.setPicturesSizes();
       break;
     case `threeImages`:
-      render.switchScreens(thirdGame.screen());
-      resize.getPicturesSizes();
+      render.switchScreens(thirdGame.element);
+      resize.setPicturesSizes();
       break;
   }
 }
@@ -64,7 +64,7 @@ export function nextQuestion() {
 
 // функция проверки правильности ответа
 
-export function checkAnswer(evt) {
+export function checkAnswer(target) {
   switch (questions[dcs.question].mode) {
     case `oneImage`:
       let modeOneQuestion = document.querySelector(`input[name=question1]:checked`);
@@ -86,7 +86,7 @@ export function checkAnswer(evt) {
     case `threeImages`:
       let [...questionsArr] = document.querySelectorAll(`.game__option`);
       let paint = questions[dcs.question].params.findIndex((val) => val.type === `paint`);
-      if (evt.target === questionsArr[paint]) {
+      if (target === questionsArr[paint]) {
         rightAnswer();
       } else {
         wrongAnswer();
@@ -152,7 +152,7 @@ function refreshStat() {
   if (data.statistic.length > 3) {
     data.statistic.length = 3;
   }
-  render.switchScreens(finalStats.screen());
+  render.switchScreens(finalStats.element);
   dcs = JSON.parse(JSON.stringify(data.initialState));
 }
 

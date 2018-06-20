@@ -1,24 +1,14 @@
-export function getPicturesSizes() {
+// функция для кадрирования изображений под размеры контейнера
+
+export function setPicturesSizes() {
   let game = document.querySelector(`.game`);
   let [...pictures] = game.querySelectorAll(`img`);
-  pictures.forEach((el, i) => {
-    el.onload = () => {
-      let picturesSizes = pictures.map((val) => {
-        let frame = {
-          width: val.width,
-          height: val.height
-        };
-        let natural = {
-          width: val.naturalWidth,
-          height: val.naturalHeight
-        };
-        return resize(frame, natural);
-      });
-      el.width = picturesSizes[i].width;
-      el.height = picturesSizes[i].height;
-    };
+  pictures.forEach((el) => {
+    el.style.objectFit = `contain`;
   });
 }
+
+// функция для задания с тестом. Решение с обжект-фитом на мой взгляд короче и оптимальнее, т.к. поддержка ИЕ не требуется, а в остальных браузерах это свойство нормально поддерживается
 
 export function resize(frame, natural) {
   let multiplier = 0;
@@ -33,9 +23,11 @@ export function resize(frame, natural) {
   };
 }
 
-// function checkPicturesLoad(val) {
-//   let resizedPicture;
-//   val.onload = () => {
+
+// реализация ресайза через изменение свойств width и height
+
+// el.onload = () => {
+//   let picturesSizes = pictures.map((val) => {
 //     let frame = {
 //       width: val.width,
 //       height: val.height
@@ -44,20 +36,12 @@ export function resize(frame, natural) {
 //       width: val.naturalWidth,
 //       height: val.naturalHeight
 //     };
-//     resizedPicture = resize(frame, natural);
-//   };
-//   return resizedPicture;
-// }
-
-
-// (val) => {
-//   let frame = {
-//     width: val.width,
-//     height: val.height
-//   };
-//   let natural = {
-//     width: val.naturalWidth,
-//     height: val.naturalHeight
-//   };
-//   return resize(frame, natural);
-// });
+//     return resize(frame, natural);
+//   });
+//   if (picturesSizes[i].width > picturesSizes[i].height) {
+//     el.width = picturesSizes[i].width;
+//     el.height = picturesSizes[i].height;
+//   } else {
+//     el.style.objectFit = `cover`;
+//   }
+// };
