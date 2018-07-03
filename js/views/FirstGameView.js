@@ -1,13 +1,11 @@
 import {AbstractView} from './AbstractView';
 import * as footer from '../modules/footer';
-import * as gameHeader from '../modules/gameHeader';
 import * as data from '../data';
 import * as gameStats from '../modules/gameStats';
 
 export class FirstGameView extends AbstractView {
   get template() {
     return `
-      ${gameHeader.gameHeader(data.currentState)}
       <div class="game">
         <p class="game__task">${data.game[1].description}</p>
         <form class="game__content">
@@ -38,7 +36,7 @@ export class FirstGameView extends AbstractView {
         ${gameStats.gameStats(data.currentState.stats.answers)}
         </div>
       </div>
-      ${footer.footer}`;
+      ${footer.footer}`.trim();
   }
   bind() {
     const answers1 = this._element.querySelector(`.game__content`);

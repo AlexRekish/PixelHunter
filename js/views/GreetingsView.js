@@ -17,16 +17,16 @@ export class GreetingsView extends AbstractView {
         </div>
         <div class="greeting__continue"><span><img src="img/arrow_right.svg" width="64" height="64" alt="Next"></span></div>
       </div>
-      ${footer.footer}`;
+      ${footer.footer}`.trim();
   }
   bind() {
     const arrow = this._element.querySelector(`.greeting__continue`);
     arrow.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this.onClick();
+      this.onNext();
     });
   }
-  onClick() {
+  onNext() {
     //
   }
 }

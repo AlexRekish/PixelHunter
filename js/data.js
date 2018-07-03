@@ -35,7 +35,7 @@ export const initialState = Object.freeze({
 
 // воспользуюсь JSON пока не нашел нормального способа глубокого клонирования объекта. Возможно реализую через наследование  <<< !!!!
 
-export const currentState = JSON.parse(JSON.stringify(initialState));
+export const currentState = ``;
 
 export const answerStatus = {
   wrong: `wrong`,

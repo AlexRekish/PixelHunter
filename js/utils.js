@@ -5,8 +5,10 @@ import {thirdGame} from './modules/game-3';
 import {finalStats} from './modules/finalStats';
 import * as render from './render';
 import * as resize from './resize';
+import {header} from './modules/header';
 
 const questions = [];
+export let currentTimer;
 let dcs; // <<< Текущее состояние игры
 
 // функция парсинга текста в html
@@ -37,16 +39,22 @@ export function startGame() {
 function renderCurrentQuestion() {
   switch (questions[dcs.question].mode) {
     case `oneImage`:
-      render.switchScreens(secondGame.element);
+      clearTimeout(currentTimer);
+      render.switchScreens(secondGame.element, header.element);
       resize.setPicturesSizes();
+      timer();
       break;
     case `twoImages`:
-      render.switchScreens(firstGame.element);
+      clearTimeout(currentTimer);
+      render.switchScreens(firstGame.element, header.element);
       resize.setPicturesSizes();
+      timer();
       break;
     case `threeImages`:
-      render.switchScreens(thirdGame.element);
+      clearTimeout(currentTimer);
+      render.switchScreens(thirdGame.element, header.element);
       resize.setPicturesSizes();
+      timer();
       break;
   }
 }
@@ -133,7 +141,9 @@ function rightAnswer() {
 
 function youWin() {
   dcs.stats.result = `Победа!`;
+  dcs.time = ``;
   countPoints();
+  clearTimeout(currentTimer);
   refreshStat();
 }
 
@@ -142,6 +152,8 @@ function youWin() {
 function youLose() {
   dcs.stats.result = `FAIL`;
   dcs.stats.totalScore = `FAIL`;
+  dcs.time = ``;
+  clearTimeout(currentTimer);
   refreshStat();
 }
 
@@ -152,16 +164,34 @@ function refreshStat() {
   if (data.statistic.length > 3) {
     data.statistic.length = 3;
   }
-  render.switchScreens(finalStats.element);
+  render.switchScreens(finalStats.element, header.element);
   dcs = JSON.parse(JSON.stringify(data.initialState));
 }
+
+// функция подсчета очков
 
 function countPoints() {
   let correct = dcs.stats.score = dcs.stats.rightAnswers * data.points.CORRECT; // correct answers
   let fast = dcs.stats.speedBonus.points = dcs.stats.speedBonus.count * data.points.FAST; // fast bonus
-  let slow = dcs.stats.slowPenalty.points = dcs.stats.slowPenalty.points * data.points.SLOW; // slow penalty
+  let slow = dcs.stats.slowPenalty.points = dcs.stats.slowPenalty.count * data.points.SLOW; // slow penalty
   dcs.stats.livesBonus.count = dcs.lives;
   let live = dcs.stats.livesBonus.points = dcs.stats.livesBonus.count * data.points.LIVES; // lives bonus
   let totalPoints = dcs.stats.totalScore = correct + fast + slow + live;
   return totalPoints;
+}
+
+// функция таймера
+
+function timer() {
+  dcs.time = 30;
+  render.refreshHeader();
+  currentTimer = setTimeout(function tick() {
+    if (dcs.time > 0) {
+      dcs.time--;
+      render.refreshHeader();
+      currentTimer = setTimeout(tick, 1000);
+    } else {
+      wrongAnswer();
+    }
+  }, 1000);
 }

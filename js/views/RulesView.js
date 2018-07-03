@@ -1,11 +1,9 @@
 import {AbstractView} from './AbstractView';
 import * as footer from '../modules/footer';
-import * as staticHeader from '../modules/staticHeader';
 
 export class RulesView extends AbstractView {
   get template() {
     return `
-      ${staticHeader.header}
       <div class="rules">
         <h1 class="rules__title">Правила</h1>
         <p class="rules__description">Угадай 10 раз для каждого изображения фото <img
@@ -22,7 +20,7 @@ export class RulesView extends AbstractView {
           <button class="rules__button  continue" type="submit" disabled>Go!</button>
         </form>
       </div>
-      ${footer.footer}`;
+      ${footer.footer}`.trim();
   }
   bind() {
     const go = this._element.querySelector(`.rules__form`);

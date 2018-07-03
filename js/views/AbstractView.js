@@ -1,6 +1,7 @@
 export class AbstractView {
   get template() {
     // возвращает строку, содержащую разметку. Должен быть переопределен
+    throw Error(`Must be overload!`);
   }
 
   render(template) {

@@ -10,16 +10,16 @@ export class IntroView extends AbstractView {
           <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
         </div>
       </div>
-      ${footer.footer}`;
+      ${footer.footer}`.trim();
   }
   bind() {
     const asterisk = this._element.querySelector(`.intro__asterisk`);
     asterisk.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this.onClick();
+      this.onNext();
     });
   }
-  onClick() {
+  onNext() {
     //
   }
 }
