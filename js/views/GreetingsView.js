@@ -1,5 +1,4 @@
 import {AbstractView} from './AbstractView';
-import * as footer from '../modules/footer';
 
 export class GreetingsView extends AbstractView {
   get template() {
@@ -16,8 +15,7 @@ export class GreetingsView extends AbstractView {
             Помни, главное — смотреть очень внимательно.</p>
         </div>
         <div class="greeting__continue"><span><img src="img/arrow_right.svg" width="64" height="64" alt="Next"></span></div>
-      </div>
-      ${footer.footer}`.trim();
+      </div>`.trim();
   }
   bind() {
     const arrow = this._element.querySelector(`.greeting__continue`);

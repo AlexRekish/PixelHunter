@@ -1,5 +1,4 @@
 import {AbstractView} from './AbstractView';
-import * as footer from '../modules/footer';
 
 export class RulesView extends AbstractView {
   get template() {
@@ -19,8 +18,7 @@ export class RulesView extends AbstractView {
           <input class="rules__input" type="text" placeholder="Ваше Имя">
           <button class="rules__button  continue" type="submit" disabled>Go!</button>
         </form>
-      </div>
-      ${footer.footer}`.trim();
+      </div>`.trim();
   }
   bind() {
     const go = this._element.querySelector(`.rules__form`);

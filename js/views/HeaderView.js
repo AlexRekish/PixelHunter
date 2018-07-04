@@ -1,5 +1,5 @@
 import {AbstractView} from './AbstractView';
-import * as data from '../data';
+import {gamePresenter} from '../presenters/GamePresenter';
 
 export class HeaderView extends AbstractView {
   get template() {
@@ -14,8 +14,8 @@ export class HeaderView extends AbstractView {
           .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`)
           .join(``)}
       </div>`.trim();
-    if (data.currentState) {
-      gameHeader = getGameHeader(data.currentState);
+    if (gamePresenter.state) {
+      gameHeader = getGameHeader(gamePresenter.state);
     }
     return `
       <header class="header">

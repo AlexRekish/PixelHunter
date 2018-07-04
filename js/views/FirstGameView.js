@@ -1,7 +1,7 @@
 import {AbstractView} from './AbstractView';
-import * as footer from '../modules/footer';
 import * as data from '../data';
-import * as gameStats from '../modules/gameStats';
+import {gamePresenter} from '../presenters/GamePresenter';
+import {statsPresenter} from '../presenters/StatsPresenter';
 
 export class FirstGameView extends AbstractView {
   get template() {
@@ -33,10 +33,9 @@ export class FirstGameView extends AbstractView {
           </div>
         </form>
         <div class="stats">
-        ${gameStats.gameStats(data.currentState.stats.answers)}
+        ${statsPresenter.view.gameStats(gamePresenter.state.stats.answers)}
         </div>
-      </div>
-      ${footer.footer}`.trim();
+      </div>`.trim();
   }
   bind() {
     const answers1 = this._element.querySelector(`.game__content`);

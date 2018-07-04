@@ -1,19 +1,35 @@
 export const NUMBER_OF_QUESTION = 10;
-export const points = Object.freeze({
+export const NUMBER_OF_STATS = 3;
+
+export const Points = Object.freeze({
   CORRECT: 100,
   FAST: 50,
   SLOW: -50,
   LIVES: 50
 });
 
-// начальное состояние игры. Скорее всего заменю на класс <<< !!!!
+export const AnswerStatus = Object.freeze({
+  WRONG: `wrong`,
+  CORRECT: `correct`,
+  SLOW: `slow`,
+  FAST: `fast`,
+  UNKNOWN: `unknown`
+});
+
+export const GameMode = Object.freeze({
+  ONE_IMAGE: `oneImage`,
+  TWO_IMAGES: `twoImages`,
+  THREE_IMAGES: `threeImages`
+});
+
+// начальное состояние игры.
 
 export const initialState = Object.freeze({
   question: 0,
   time: 30,
   lives: 3,
   stats: {
-    answers: [`unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`, `unknown`],
+    answers: new Array(NUMBER_OF_QUESTION).fill(AnswerStatus.UNKNOWN),
     rightAnswers: 0,
     score: 0,
     result: ``,
@@ -33,17 +49,7 @@ export const initialState = Object.freeze({
   }
 });
 
-// воспользуюсь JSON пока не нашел нормального способа глубокого клонирования объекта. Возможно реализую через наследование  <<< !!!!
-
 export const currentState = ``;
-
-export const answerStatus = {
-  wrong: `wrong`,
-  correct: `correct`,
-  slow: `slow`,
-  fast: `fast`,
-  unknown: `unknown`
-};
 
 export const pictures = {
   paintings: [
@@ -62,7 +68,7 @@ export const pictures = {
 
 export const game = [
   {
-    mode: `oneImage`,
+    mode: GameMode.ONE_IMAGE,
     description: `Угадай, фото или рисунок?`,
     images: 1,
     params: [
@@ -77,7 +83,7 @@ export const game = [
     }
   },
   {
-    mode: `twoImages`,
+    mode: GameMode.TWO_IMAGES,
     description: `Угадайте для каждого изображения фото или рисунок?`,
     images: 2,
     params: [
@@ -96,7 +102,7 @@ export const game = [
     }
   },
   {
-    mode: `threeImages`,
+    mode: GameMode.THREE_IMAGES,
     description: `Найдите рисунок среди изображений`,
     images: 3,
     params: [
@@ -122,6 +128,4 @@ export const game = [
 
 // функция генерации массива с вопросами
 
-export const questions = () => new Array(10).fill().map(() => game[Math.floor(Math.random() * game.length)]);
-
-export const statistic = [];
+export const questions = () => new Array(NUMBER_OF_QUESTION).fill().map(() => game[Math.floor(Math.random() * game.length)]);

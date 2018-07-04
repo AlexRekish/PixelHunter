@@ -1,5 +1,6 @@
+import {headerPresenter} from './presenters/HeaderPresenter';
+
 export const main = document.querySelector(`.central`);
-import {header} from './modules/header';
 
 // функция отрисовки шаблона на странице
 
@@ -12,5 +13,5 @@ export function switchScreens(template, currentHeader) {
 }
 
 export function refreshHeader() {
-  main.replaceChild(header.element, main.firstChild);
+  main.replaceChild(headerPresenter.view.element, main.firstChild);
 }
