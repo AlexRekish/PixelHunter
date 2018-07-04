@@ -4,6 +4,6 @@ export default class AbstractPresenter {
   }
 
   listener() {
-    throw Error(`Must be overload!`);
+    throw new Error(`Must be overload!`);
   }
 }
