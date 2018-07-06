@@ -1,6 +1,14 @@
 export const NUMBER_OF_QUESTION = 10;
 export const NUMBER_OF_STATS = 3;
 
+export const paramPoints = [
+  `wrong`,
+  `correct`,
+  `slow`,
+  `fast`,
+  `unknown`
+];
+
 export const Points = Object.freeze({
   CORRECT: 100,
   FAST: 50,
@@ -125,6 +133,10 @@ export const game = [
     }
   }
 ];
+
+export const statistic = [];
+
+export let hashFromAnswers = [];
 
 // функция генерации массива с вопросами
 

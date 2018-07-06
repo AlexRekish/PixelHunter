@@ -1,8 +1,6 @@
-import * as render from '../render';
-import {rulesPresenter} from './RulesPresenter';
 import {GreetingsView} from '../views/GreetingsView';
-import {headerPresenter} from './HeaderPresenter';
 import AbstractPresenter from './AbstractPresenter';
+import app from '../Application';
 
 class GreetingsPresenter extends AbstractPresenter {
   constructor() {
@@ -11,11 +9,10 @@ class GreetingsPresenter extends AbstractPresenter {
 
   listener() {
     this.view.onNext = () => {
-      render.switchScreens(rulesPresenter.view.element, headerPresenter.view.element);
+      app.showRules();
     };
   }
 }
 export const greetingsPresenter = new GreetingsPresenter();
-greetingsPresenter.listener();
 
 

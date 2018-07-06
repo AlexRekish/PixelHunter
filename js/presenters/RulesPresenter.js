@@ -1,6 +1,7 @@
-import {gamePresenter} from './GamePresenter';
 import {RulesView} from '../views/RulesView';
 import AbstractPresenter from './AbstractPresenter';
+import {headerPresenter} from './HeaderPresenter';
+import app from '../Application';
 
 class RulesPresenter extends AbstractPresenter {
   constructor() {
@@ -9,7 +10,7 @@ class RulesPresenter extends AbstractPresenter {
 
   listener() {
     this.view.onGameStart = () => {
-      gamePresenter.startGame();
+      app.showGame();
     };
 
     this.view.onInputName = (input, submit) => {
@@ -18,7 +19,11 @@ class RulesPresenter extends AbstractPresenter {
       }
     };
   }
+
+  init() {
+    this.listener();
+    this.switchScreens(this.view.element, headerPresenter.view.element);
+  }
 }
 
 export const rulesPresenter = new RulesPresenter();
-rulesPresenter.listener();

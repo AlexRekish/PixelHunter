@@ -1,8 +1,7 @@
 import {HeaderView} from '../views/HeaderView';
-import * as render from '../render';
-import {greetingsPresenter} from './GreetingsPresenter';
 import {currentTimer, gamePresenter} from './GamePresenter';
 import AbstractPresenter from './AbstractPresenter';
+import app from '../Application';
 
 class HeaderPresenter extends AbstractPresenter {
   constructor() {
@@ -13,8 +12,12 @@ class HeaderPresenter extends AbstractPresenter {
     this.view.onBack = () => {
       gamePresenter.state = ``;
       clearTimeout(currentTimer);
-      render.switchScreens(greetingsPresenter.view.element);
+      app.showGreetings();
     };
+  }
+
+  refreshHeader() {
+    this.main.replaceChild(this.view.element, this.main.firstChild);
   }
 }
 

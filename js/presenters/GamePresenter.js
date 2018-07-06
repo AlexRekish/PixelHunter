@@ -1,12 +1,11 @@
 import * as data from '../data';
-import * as render from '../render';
-import * as resize from '../resize';
 import {statsPresenter} from './StatsPresenter';
 import {headerPresenter} from './HeaderPresenter';
 import {FirstGameView} from '../views/FirstGameView';
 import {SecondGameView} from '../views/SecondGameView';
 import {ThirdGameView} from '../views/ThirdGameView';
 import AbstractPresenter from './AbstractPresenter';
+import app from '../Application';
 
 export let currentTimer;
 
@@ -23,11 +22,6 @@ class GamePresenter extends AbstractPresenter {
     this.questions.length = 0;
     this.questions.push(...data.questions());
     this.state = JSON.parse(JSON.stringify(data.initialState));
-    if (statsPresenter.statistic.length < 3) {
-      while (statsPresenter.statistic.length < 3) {
-        statsPresenter.statistic.push(data.initialState.stats);
-      }
-    }
     this.renderCurrentQuestion();
   }
 
@@ -41,9 +35,7 @@ class GamePresenter extends AbstractPresenter {
         this.view.onAnswer = (target) => {
           gamePresenter.checkAnswer(target);
         };
-        render.switchScreens(this.view.element, headerPresenter.view.element);
-        resize.setPicturesSizes();
-        this.timer();
+        this.render();
         break;
       case data.GameMode.TWO_IMAGES:
         clearTimeout(currentTimer);
@@ -53,9 +45,7 @@ class GamePresenter extends AbstractPresenter {
             gamePresenter.checkAnswer(target);
           }
         };
-        render.switchScreens(this.view.element, headerPresenter.view.element);
-        resize.setPicturesSizes();
-        this.timer();
+        this.render();
         break;
       case data.GameMode.THREE_IMAGES:
         clearTimeout(currentTimer);
@@ -65,9 +55,7 @@ class GamePresenter extends AbstractPresenter {
             gamePresenter.checkAnswer(target);
           }
         };
-        render.switchScreens(this.view.element, headerPresenter.view.element);
-        resize.setPicturesSizes();
-        this.timer();
+        this.render();
         break;
     }
   }
@@ -155,9 +143,9 @@ class GamePresenter extends AbstractPresenter {
   youWin() {
     this.state.stats.result = `Победа!`;
     this.state.time = ``;
-    statsPresenter.countPoints();
+    statsPresenter.countPoints(this.state.stats, this.state.lives);
     clearTimeout(currentTimer);
-    statsPresenter.refreshStat();
+    app.showStats();
   }
 
   // функция обработки поражения
@@ -167,7 +155,7 @@ class GamePresenter extends AbstractPresenter {
     this.state.stats.totalScore = `FAIL`;
     this.state.time = ``;
     clearTimeout(currentTimer);
-    statsPresenter.refreshStat();
+    app.showStats();
   }
 
   // функция таймера
@@ -175,16 +163,34 @@ class GamePresenter extends AbstractPresenter {
   timer() {
     let that = this;
     that.state.time = 30;
-    render.refreshHeader();
+    headerPresenter.refreshHeader();
     currentTimer = setTimeout(function tick() {
       if (that.state.time > 0) {
         that.state.time--;
-        render.refreshHeader();
+        headerPresenter.refreshHeader();
         currentTimer = setTimeout(tick, 1000);
       } else {
         that.wrongAnswer();
       }
     }, 1000);
+  }
+
+  setPicturesSizes() {
+    let game = document.querySelector(`.game`);
+    let [...pictures] = game.querySelectorAll(`img`);
+    pictures.forEach((el) => {
+      el.style.objectFit = `contain`;
+    });
+  }
+
+  render() {
+    this.switchScreens(this.view.element, headerPresenter.view.element);
+    this.setPicturesSizes();
+    this.timer();
+  }
+
+  init() {
+    this.startGame();
   }
 }
 

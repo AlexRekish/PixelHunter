@@ -1,7 +1,8 @@
-import * as render from '../render';
-import {greetingsPresenter} from './GreetingsPresenter';
+// import * as render from '../render';
+// import {greetingsPresenter} from './GreetingsPresenter';
 import {IntroView} from '../views/IntroView';
 import AbstractPresenter from './AbstractPresenter';
+import app from '../Application';
 
 class IntroPresenter extends AbstractPresenter {
   constructor() {
@@ -10,12 +11,12 @@ class IntroPresenter extends AbstractPresenter {
 
   listener() {
     this.view.onNext = () => {
-      render.switchScreens(greetingsPresenter.view.element);
+      app.showGreetings();
     };
   }
 }
 
 export const introPresenter = new IntroPresenter();
-introPresenter.listener();
+// introPresenter.listener();
 
 

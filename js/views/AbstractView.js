@@ -16,10 +16,8 @@ export class AbstractView {
   }
 
   get element() {
-    // if (!this._element) {
     this._element = this.render(this.template);
     this.bind();
-    // }
     return this._element;
   }
 }

@@ -1,6 +1,6 @@
 import {AbstractView} from './AbstractView';
 import * as data from '../data';
-import {gamePresenter} from '../presenters/GamePresenter';
+// import {gamePresenter} from '../presenters/GamePresenter';
 import {statsPresenter} from '../presenters/StatsPresenter';
 
 export class StatsView extends AbstractView {
@@ -52,7 +52,7 @@ export class StatsView extends AbstractView {
     };
     return `
       <div class="result">
-        <h1>${gamePresenter.state.stats.result}</h1>
+        <h1>${statsPresenter.statistic[0].result}</h1>
         ${statsPresenter.statistic.map((val, i) => `<table class="result__table">
           <tr>
             <td class="result__number">${i + 1}.</td>
