@@ -3,6 +3,8 @@ import {gamePresenter} from './presenters/GamePresenter';
 import {greetingsPresenter} from './presenters/GreetingsPresenter';
 import {introPresenter} from './presenters/IntroPresenter';
 import {statsPresenter} from './presenters/StatsPresenter';
+import Model from './model/Model';
+import * as data from './model/data';
 
 export const ControllerID = {
   INTRO: ``,
@@ -17,18 +19,36 @@ const getControllerIDFromHash = (hash) => hash.replace(`#`, ``);
 class Application {
   constructor() {
     this.main = document.querySelector(`.central`);
+
+    this.model = new class extends Model {
+      get urlRead() {
+        return `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`;
+      }
+    }();
+
+    this.model.load()
+      .then((dq) => {
+        data.downloadedQuestion = dq;
+      })
+      .then(() => this.setup())
+      .then(() => this.changeController(getControllerIDFromHash(location.hash)))
+      .catch(window.console.error);
+  }
+
+  setup() {
     this.routes = {
       [ControllerID.INTRO]: introPresenter,
       [ControllerID.GREETINGS]: greetingsPresenter,
       [ControllerID.RULES]: rulesPresenter,
-      [ControllerID.GAME]: gamePresenter,
-      // [ControllerID.STAT]: statsPresenter,
+      [ControllerID.GAME]: gamePresenter
     };
 
     window.onhashchange = () => {
       this.changeController(getControllerIDFromHash(location.hash));
     };
   }
+
+  // функция инициализации презентера в зависимости от хэша
 
   changeController(route = ``) {
     let controller;
@@ -71,6 +91,6 @@ class Application {
 }
 
 const app = new Application();
-app.init();
+// app.init();
 
 export default app;

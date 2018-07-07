@@ -1,4 +1,4 @@
-import * as data from '../data';
+import * as data from '../model/data';
 import {gamePresenter} from './GamePresenter';
 import {headerPresenter} from './HeaderPresenter';
 import {StatsView} from '../views/StatsView';
@@ -20,10 +20,16 @@ class StatsPresenter extends AbstractPresenter {
   refreshStat() {
     if (gamePresenter.state.stats) {
       this.statistic.unshift(gamePresenter.state.stats);
+      if (this.statistic.length > 3) {
+        this.statistic.length = 3;
+      }
     } else {
       this.statistic.unshift(this.parseFromParamPoints().stats);
+      this.statistic.length = 1;
     }
   }
+
+  // функция отрисовки статистики
 
   renderStat() {
     this.switchScreens(this.view.element, headerPresenter.view.element);
@@ -41,6 +47,8 @@ class StatsPresenter extends AbstractPresenter {
     let totalPoints = state.totalScore = correct + fast + slow + live;
     return totalPoints;
   }
+
+  // функция парсинга статистики из хэша
 
   parseFromParamPoints() {
     const state = JSON.parse(JSON.stringify(data.initialState));
@@ -68,7 +76,7 @@ class StatsPresenter extends AbstractPresenter {
           break;
       }
     });
-    if (state.stats.rightAnswers <= 7) {
+    if (state.stats.rightAnswers < 8) {
       state.stats.result = `FAIL`;
     } else {
       state.stats.result = `Победа`;
@@ -77,6 +85,8 @@ class StatsPresenter extends AbstractPresenter {
     this.countPoints(state.stats, state.lives);
     return state;
   }
+
+  // функция парсинга статистики в хэш
 
   parseToParamPoints() {
     const state = this.statistic[0];

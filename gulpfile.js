@@ -38,7 +38,7 @@ gulp.task('style', function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src('js/main.js')
+  return gulp.src('js/Application.js')
   	.pipe(webpack({
 			output: {
 				filename: 'scripts.js',

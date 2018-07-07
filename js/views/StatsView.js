@@ -1,6 +1,5 @@
 import {AbstractView} from './AbstractView';
-import * as data from '../data';
-// import {gamePresenter} from '../presenters/GamePresenter';
+import * as data from '../model/data';
 import {statsPresenter} from '../presenters/StatsPresenter';
 
 export class StatsView extends AbstractView {

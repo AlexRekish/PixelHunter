@@ -1,5 +1,5 @@
 import {AbstractView} from './AbstractView';
-import * as data from '../data';
+import * as data from '../model/data';
 import {gamePresenter} from '../presenters/GamePresenter';
 import {statsPresenter} from '../presenters/StatsPresenter';
 
@@ -7,10 +7,10 @@ export class SecondGameView extends AbstractView {
   get template() {
     return `
       <div class="game">
-        <p class="game__task">${data.game[0].description}</p>
+        <p class="game__task">${data.downloadedQuestion[gamePresenter.state.question].question}</p>
         <form class="game__content  game__content--wide">
           <div class="game__option">
-            <img src="${data.game[0].params[0].src}" alt="Option 1" width="705" height="455">
+            <img src="${data.downloadedQuestion[gamePresenter.state.question].answers[0].image.url}" alt="Option 1" width="705" height="455">
             <label class="game__answer  game__answer--photo">
               <input name="question1" type="radio" value="photo">
               <span>Фото</span>

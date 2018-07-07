@@ -1,5 +1,3 @@
-// import * as render from '../render';
-// import {greetingsPresenter} from './GreetingsPresenter';
 import {IntroView} from '../views/IntroView';
 import AbstractPresenter from './AbstractPresenter';
 import app from '../Application';
@@ -17,6 +15,5 @@ class IntroPresenter extends AbstractPresenter {
 }
 
 export const introPresenter = new IntroPresenter();
-// introPresenter.listener();
 
 

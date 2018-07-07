@@ -1,5 +1,3 @@
-// import {app} from '../Application';
-
 export default class AbstractPresenter {
   constructor(view) {
     this.view = view;

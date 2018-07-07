@@ -25,9 +25,9 @@ export const AnswerStatus = Object.freeze({
 });
 
 export const GameMode = Object.freeze({
-  ONE_IMAGE: `oneImage`,
-  TWO_IMAGES: `twoImages`,
-  THREE_IMAGES: `threeImages`
+  ONE_IMAGE: `tinder-like`,
+  TWO_IMAGES: `two-of-two`,
+  THREE_IMAGES: `one-of-three`
 });
 
 // начальное состояние игры.
@@ -76,68 +76,75 @@ export const pictures = {
 
 export const game = [
   {
-    mode: GameMode.ONE_IMAGE,
-    description: `Угадай, фото или рисунок?`,
-    images: 1,
-    params: [
+    type: GameMode.ONE_IMAGE,
+    question: `Угадай, фото или рисунок?`,
+    answers: [
       {
-        type: `paint`,
-        src: pictures.paintings[1]
+        'image': {
+          url: pictures.paintings[1],
+          width: 705,
+          height: 455
+        },
+        'type': `paint`
       }
-    ],
-    framesize: {
-      width: 705,
-      height: 455
-    }
+    ]
   },
   {
-    mode: GameMode.TWO_IMAGES,
-    description: `Угадайте для каждого изображения фото или рисунок?`,
-    images: 2,
-    params: [
+    type: GameMode.TWO_IMAGES,
+    question: `Угадайте для каждого изображения фото или рисунок?`,
+    answers: [
       {
-        type: `paint`,
-        src: pictures.paintings[2]
+        'image': {
+          url: pictures.paintings[2],
+          width: 468,
+          height: 458
+        },
+        'type': `paint`
       },
       {
-        type: `photo`,
-        src: pictures.photos[0]
+        'image': {
+          url: pictures.photos[0],
+          width: 468,
+          height: 458
+        },
+        'type': `photo`
       }
-    ],
-    framesize: {
-      width: 468,
-      height: 458
-    }
+    ]
   },
   {
-    mode: GameMode.THREE_IMAGES,
-    description: `Найдите рисунок среди изображений`,
-    images: 3,
-    params: [
+    type: GameMode.THREE_IMAGES,
+    question: `Найдите рисунок среди изображений`,
+    answers: [
       {
-        type: `photo`,
-        src: pictures.photos[1]
+        'image': {
+          url: pictures.photos[1],
+          width: 304,
+          height: 455
+        },
+        'type': `photo`
       },
       {
-        type: `photo`,
-        src: pictures.photos[2]
+        'image': {
+          url: pictures.photos[2],
+          width: 304,
+          height: 455
+        },
+        'type': `photo`
       },
       {
-        type: `paint`,
-        src: pictures.paintings[0]
+        'image': {
+          url: pictures.paintings[0],
+          width: 304,
+          height: 455
+        },
+        'type': `paint`
       }
     ],
-    framesize: {
-      width: 304,
-      height: 455
-    }
   }
 ];
-
-export const statistic = [];
-
-export let hashFromAnswers = [];
 
 // функция генерации массива с вопросами
 
 export const questions = () => new Array(NUMBER_OF_QUESTION).fill().map(() => game[Math.floor(Math.random() * game.length)]);
+
+export const downloadedQuestion = [];

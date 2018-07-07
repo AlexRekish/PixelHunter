@@ -1,4 +1,4 @@
-import * as data from '../data';
+import * as data from '../model/data';
 import {statsPresenter} from './StatsPresenter';
 import {headerPresenter} from './HeaderPresenter';
 import {FirstGameView} from '../views/FirstGameView';
@@ -20,7 +20,7 @@ class GamePresenter extends AbstractPresenter {
 
   startGame() {
     this.questions.length = 0;
-    this.questions.push(...data.questions());
+    this.questions.push(...data.downloadedQuestion);
     this.state = JSON.parse(JSON.stringify(data.initialState));
     this.renderCurrentQuestion();
   }
@@ -28,7 +28,7 @@ class GamePresenter extends AbstractPresenter {
   // функция отрисовки вопроса
 
   renderCurrentQuestion() {
-    switch (this.questions[this.state.question].mode) {
+    switch (this.questions[this.state.question].type) {
       case data.GameMode.ONE_IMAGE:
         clearTimeout(currentTimer);
         this.view = new SecondGameView();
@@ -74,10 +74,10 @@ class GamePresenter extends AbstractPresenter {
   // функция проверки правильности ответа
 
   checkAnswer(target) {
-    switch (this.questions[this.state.question].mode) {
+    switch (this.questions[this.state.question].type) {
       case data.GameMode.ONE_IMAGE:
         let modeOneQuestion = document.querySelector(`input[name=question1]:checked`);
-        if (modeOneQuestion.value === this.questions[this.state.question].params[0].type) {
+        if (modeOneQuestion.value === this.questions[this.state.question].answers[0].type) {
           this.rightAnswer();
         } else {
           this.wrongAnswer();
@@ -86,7 +86,7 @@ class GamePresenter extends AbstractPresenter {
       case data.GameMode.TWO_IMAGES:
         let question1 = document.querySelector(`input[name=question1]:checked`);
         let question2 = document.querySelector(`input[name=question2]:checked`);
-        if (question1.value === this.questions[this.state.question].params[0].type && question2.value === this.questions[this.state.question].params[1].type) {
+        if (question1.value === this.questions[this.state.question].answers[0].type && question2.value === this.questions[this.state.question].answers[1].type) {
           this.rightAnswer();
         } else {
           this.wrongAnswer();
@@ -94,7 +94,7 @@ class GamePresenter extends AbstractPresenter {
         break;
       case data.GameMode.THREE_IMAGES:
         let [...questionsArr] = document.querySelectorAll(`.game__option`);
-        let paint = this.questions[this.state.question].params.findIndex((val) => val.type === `paint`);
+        let paint = this.questions[this.state.question].answers.findIndex((val) => val.type === `paint`);
         if (target === questionsArr[paint]) {
           this.rightAnswer();
         } else {
@@ -175,6 +175,8 @@ class GamePresenter extends AbstractPresenter {
     }, 1000);
   }
 
+  // функция подгона размера изображений под размер фрейма
+
   setPicturesSizes() {
     let game = document.querySelector(`.game`);
     let [...pictures] = game.querySelectorAll(`img`);
@@ -182,6 +184,8 @@ class GamePresenter extends AbstractPresenter {
       el.style.objectFit = `contain`;
     });
   }
+
+  // функция отрисовки игрового экрана
 
   render() {
     this.switchScreens(this.view.element, headerPresenter.view.element);
