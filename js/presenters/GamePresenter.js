@@ -94,11 +94,22 @@ class GamePresenter extends AbstractPresenter {
         break;
       case data.GameMode.THREE_IMAGES:
         let [...questionsArr] = document.querySelectorAll(`.game__option`);
-        let paint = this.questions[this.state.question].answers.findIndex((val) => val.type === `paint`);
-        if (target === questionsArr[paint]) {
-          this.rightAnswer();
+        // если всего один вопрос с типом `photo`, то нужно выбрать фото среди изображений
+        if (this.questions[this.state.question].answers.filter((val) => val.type === `photo`).length === 1) {
+          let photo = this.questions[this.state.question].answers.findIndex((val) => val.type === `photo`);
+          if (target === questionsArr[photo]) {
+            this.rightAnswer();
+          } else {
+            this.wrongAnswer();
+          }
         } else {
-          this.wrongAnswer();
+          // иначе нужно выбрать рисунок среди изображений
+          let paint = this.questions[this.state.question].answers.findIndex((val) => val.type === `paint`);
+          if (target === questionsArr[paint]) {
+            this.rightAnswer();
+          } else {
+            this.wrongAnswer();
+          }
         }
         break;
     }
@@ -141,21 +152,25 @@ class GamePresenter extends AbstractPresenter {
   // функция обработки победы
 
   youWin() {
-    this.state.stats.result = `Победа!`;
     this.state.time = ``;
-    statsPresenter.countPoints(this.state.stats, this.state.lives);
     clearTimeout(currentTimer);
-    app.showStats();
+    app.showPreloader();
+    app.model.sendStat(statsPresenter.getStateForUpload())
+      .then(() => {
+        app.showStats();
+      });
   }
 
   // функция обработки поражения
 
   youLose() {
-    this.state.stats.result = `FAIL`;
-    this.state.stats.totalScore = `FAIL`;
     this.state.time = ``;
     clearTimeout(currentTimer);
-    app.showStats();
+    app.showPreloader();
+    app.model.sendStat(statsPresenter.getStateForUpload())
+      .then(() => {
+        app.showStats();
+      });
   }
 
   // функция таймера

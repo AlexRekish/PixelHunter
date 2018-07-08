@@ -9,8 +9,8 @@ class RulesPresenter extends AbstractPresenter {
   }
 
   listener() {
-    this.view.onGameStart = () => {
-      app.showGame();
+    this.view.onGameStart = (name) => {
+      app.showGame(name);
     };
 
     this.view.onInputName = (input, submit) => {

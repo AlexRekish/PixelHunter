@@ -5,6 +5,7 @@ import {introPresenter} from './presenters/IntroPresenter';
 import {statsPresenter} from './presenters/StatsPresenter';
 import Model from './model/Model';
 import * as data from './model/data';
+import preloaderPresenter from './presenters/PreloaderPresenter';
 
 export const ControllerID = {
   INTRO: ``,
@@ -19,20 +20,29 @@ const getControllerIDFromHash = (hash) => hash.replace(`#`, ``);
 class Application {
   constructor() {
     this.main = document.querySelector(`.central`);
+    this.name = ``;
 
     this.model = new class extends Model {
       get urlRead() {
         return `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`;
       }
+
+      get urlWrite() {
+        return this._urlWrite;
+      }
+
+      set urlWrite(url) {
+        this._urlWrite = url;
+      }
     }();
 
-    this.model.load()
+    this.model.loadQuestions()
       .then((dq) => {
         data.downloadedQuestion = dq;
       })
       .then(() => this.setup())
       .then(() => this.changeController(getControllerIDFromHash(location.hash)))
-      .catch(window.console.error);
+      .catch((err) => window.console.warn(err));
   }
 
   setup() {
@@ -68,6 +78,9 @@ class Application {
     this.changeController(getControllerIDFromHash(location.hash));
   }
 
+  showPreloader() {
+    preloaderPresenter.init();
+  }
   showIntro() {
     location.hash = ControllerID.INTRO;
   }
@@ -77,20 +90,30 @@ class Application {
   showRules() {
     location.hash = ControllerID.RULES;
   }
-  showGame() {
+  showGame(name) {
+    this.name = name;
+    this.model.urlWrite = `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/stats/${this.name}`;
     location.hash = ControllerID.GAME;
   }
   showStats() {
-    statsPresenter.refreshStat();
-    if (gamePresenter.state.stats) {
-      ControllerID.STAT = statsPresenter.parseToParamPoints();
-      this.routes[ControllerID.STAT] = statsPresenter;
-      location.hash = ControllerID.STAT;
-    }
+    this.model.loadStat()
+      .then((dd) => {
+        statsPresenter.statistic = dd;
+      })
+      .then(() => {
+        if (gamePresenter.state.stats) {
+          ControllerID.STAT = statsPresenter.parseToParamPoints();
+          this.routes[ControllerID.STAT] = statsPresenter;
+          location.hash = ControllerID.STAT;
+        } else {
+          statsPresenter.refreshStat();
+        }
+      })
+      .catch((err) => window.console.warn(err));
   }
 }
 
 const app = new Application();
-// app.init();
+app.showPreloader();
 
 export default app;

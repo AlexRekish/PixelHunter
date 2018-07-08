@@ -8,22 +8,12 @@ class StatsPresenter extends AbstractPresenter {
   constructor() {
     super(new StatsView());
     this.statistic = [];
-    if (this.statistic.length < 3) {
-      while (this.statistic.length < 3) {
-        this.statistic.push(data.initialState.stats);
-      }
-    }
   }
 
   // функция обновления статистики
 
   refreshStat() {
-    if (gamePresenter.state.stats) {
-      this.statistic.unshift(gamePresenter.state.stats);
-      if (this.statistic.length > 3) {
-        this.statistic.length = 3;
-      }
-    } else {
+    if (!gamePresenter.state.stats) {
       this.statistic.unshift(this.parseFromParamPoints().stats);
       this.statistic.length = 1;
     }
@@ -95,6 +85,52 @@ class StatsPresenter extends AbstractPresenter {
     });
     hashArr.unshift(gamePresenter.state.lives);
     return `stat-${hashArr.join(``)}`;
+  }
+
+  getStateForUpload() {
+    const answers = gamePresenter.state.stats.answers.slice();
+    const lives = gamePresenter.state.lives;
+    return {
+      stats: answers,
+      lives
+    };
+  }
+
+  // функция приведения ответа сервера к виду модели
+
+  getStatUnitFromDownload(dataUnit) {
+    const stat = JSON.parse(JSON.stringify(data.initialState.stats));
+    stat.answers = dataUnit.stats;
+    stat.livesBonus.count = dataUnit.lives;
+
+    stat.answers.forEach((val) => {
+      switch (val) {
+        case data.AnswerStatus.WRONG:
+          break;
+        case data.AnswerStatus.CORRECT:
+          stat.rightAnswers++;
+          break;
+        case data.AnswerStatus.SLOW:
+          stat.rightAnswers++;
+          stat.slowPenalty.count++;
+          break;
+        case data.AnswerStatus.FAST:
+          stat.rightAnswers++;
+          stat.speedBonus.count++;
+          break;
+        case data.AnswerStatus.UNKNOWN:
+          break;
+      }
+    });
+    if (stat.rightAnswers < 8) {
+      stat.result = `FAIL`;
+      stat.totalScore = `FAIL`;
+    } else {
+      stat.result = `Победа`;
+      this.countPoints(stat, stat.livesBonus.count);
+    }
+
+    return stat;
   }
 
   init() {

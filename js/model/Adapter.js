@@ -1,4 +1,7 @@
+import {statsPresenter} from '../presenters/StatsPresenter';
 export class Adapter {
+
+  // приведение списка вопросов с сервера к модели
 
   preprocess(data) {
     const [...game] = data;
@@ -12,8 +15,16 @@ export class Adapter {
     return game;
   }
 
+  // приведение статистики с сервера к модели
+
+  preprocessStat(data) {
+    return data.map((val) => statsPresenter.getStatUnitFromDownload(val));
+  }
+
+  // обработка статистики для отправки на сервер
+
   toServer(data) {
-    return data;
+    return JSON.stringify(data);
   }
 }
 

@@ -26,7 +26,7 @@ export class RulesView extends AbstractView {
     const submit = go.querySelector(`.rules__button`);
     go.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
-      this.onGameStart();
+      this.onGameStart(input.value);
     });
     input.addEventListener(`input`, () => {
       this.onInputName(input, submit);

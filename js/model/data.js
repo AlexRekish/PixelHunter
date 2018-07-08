@@ -143,6 +143,11 @@ export const game = [
   }
 ];
 
+export const statUnit = {
+  stats: [],
+  lives: 2
+};
+
 // функция генерации массива с вопросами
 
 export const questions = () => new Array(NUMBER_OF_QUESTION).fill().map(() => game[Math.floor(Math.random() * game.length)]);
