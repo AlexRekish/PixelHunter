@@ -5,6 +5,7 @@ const gulp = require('gulp');
 const sass = require('gulp-sass');
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
+const uglify = require('gulp-uglify');
 const autoprefixer = require('autoprefixer');
 const server = require('browser-sync').create();
 const mqpacker = require('css-mqpacker');
@@ -53,7 +54,8 @@ gulp.task('scripts', function () {
 					}
 				}]
 			}
-		}))
+    }))
+    .pipe(uglify())
     .pipe(plumber())
     .pipe(gulp.dest('build/js/'))
     ;
